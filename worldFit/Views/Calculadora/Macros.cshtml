@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Calculadora de Macros";
+}
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h3 class="text-primary text-center mb-3">Calculadora de Macros</h3>
+        <p class="text-center text-muted mb-4">
+            Calcula la distribución óptima de macronutrientes según tus calorías diarias y tus objetivos.
+        </p>
+
+        @using (Html.BeginForm("Macros", "Calculadora", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Distribución de Macros:</label>
+                    <select name="tipo" class="form-control">
+                        <option value="equilibrado">Equilibrado (40/30/30)</option>
+                        <option value="bajoCarb">Bajo en Carbohidratos (20/40/40)</option>
+                        <option value="altoProt">Alto en Proteínas (30/40/30)</option>
+                        <option value="cetogenico">Cetogénico (5/25/70)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Calorías Diarias:</label>
+                    <input type="number" name="calorias" step="0.1" class="form-control" required placeholder="Ej. 2500" />
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label>Comidas al Día:</label>
+                    <input type="number" name="comidas" step="1" class="form-control" required placeholder="Ej. 3" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-2">Calcular</button>
+        }
+
+        @if (ViewBag.Calorias != null)
+        {
+            <hr class="my-4" />
+            <div class="text-center mb-3">
+                <h5><strong>Calorías diarias:</strong> @ViewBag.Calorias kcal</h5>
+                <h6><strong>Distribución por comida (@ViewBag.Comidas comidas):</strong></h6>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="card p-3 border-primary">
+                        <h5 class="text-primary">CARBOHIDRATOS</h5>
+                        <p class="mb-0">@ViewBag.CarbComida g por comida</p>
+                        <small>Total diario: @ViewBag.Carb g</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 border-success">
+                        <h5 class="text-success">PROTEÍNA</h5>
+                        <p class="mb-0">@ViewBag.ProtComida g por comida</p>
+                        <small>Total diario: @ViewBag.Prot g</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 border-warning">
+                        <h5 class="text-warning">GRASA</h5>
+                        <p class="mb-0">@ViewBag.GrasaComida g por comida</p>
+                        <small>Total diario: @ViewBag.Grasa g</small>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3 text-center">@ViewBag.Error</div>
+        }
+    </div>
+</div>

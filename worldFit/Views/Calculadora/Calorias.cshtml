@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Calculadora de Calorías";
+}
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h3 class="mb-3 text-primary text-center">Calculadora de Calorías Diarias</h3>
+
+        @using (Html.BeginForm("Calorias", "Calculadora", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Género:</label>
+                    <select name="genero" class="form-control" required>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Edad:</label>
+                    <input type="number" name="edad" class="form-control" required min="13" max="99" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Peso (kg):</label>
+                    <input type="number" name="peso" step="0.1" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Altura (cm):</label>
+                    <input type="number" name="altura" step="0.1" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>Nivel de Actividad:</label>
+                <select name="actividad" class="form-control">
+                    <option value="sedentario">Sedentario (poco o ningún ejercicio)</option>
+                    <option value="ligero">Ligero (1-3 días/semana)</option>
+                    <option value="moderado">Moderado (3-5 días/semana)</option>
+                    <option value="intenso">Intenso (6-7 días/semana)</option>
+                    <option value="muyintenso">Muy intenso (entrenamientos diarios duros)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Objetivo:</label>
+                <select name="objetivo" class="form-control">
+                    <option value="mantener">Mantener peso</option>
+                    <option value="bajar">Bajar peso</option>
+                    <option value="subir">Subir peso</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Calcular</button>
+        }
+
+        @if (ViewBag.Calorias != null)
+        {
+            <div class="alert alert-info mt-4 text-center">
+                <h5>@ViewBag.Mensaje</h5>
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+        }
+    </div>
+</div>

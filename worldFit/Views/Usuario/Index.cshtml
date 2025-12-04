@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Dominio.Entidad.Entidad.Rutina>
+@{
+    ViewBag.Title = "Bienvenido a WorldFit";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <img src="~/Content/img/wordlfit_logo.png" alt="WorldFit" width="100" height="100" class="mb-3 rounded-circle shadow" />
+        <h1 class="fw-bold">Bienvenido a <span class="text-success">WorldFit</span></h1>
+        <p class="lead text-muted">Tu compañero virtual para una vida más sana 💪</p>
+        <a href="@Url.Action("Registro","Usuario")" class="btn btn-success btn-lg mt-3">
+            ¡Comienza ahora!
+        </a>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title text-success">📊 IMC</h3>
+                    <p class="card-text">
+                        Calcula tu <strong>Índice de Masa Corporal</strong> y conoce tu estado físico
+                        para llevar un control más saludable.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title text-primary">🏋️ Rutinas</h3>
+                    <p class="card-text">
+                        Accede a rutinas personalizadas según tus objetivos:
+                        bajar de peso, ganar músculo o mantenerte activo.
+                    </p>
+
+                     <!-- 🔹 Botón para ir a la vista de rutinas -->
+                    <a href="@Url.Action("ListaRutinas", "Rutina")" class="btn btn-outline-primary mt-3">
+                        Ver Rutinas
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title text-warning">🥗 Hábitos</h3>
+                    <p class="card-text">
+                        Registra y mejora tus <strong>hábitos diarios</strong> como sueño, alimentación
+                        y consumo de agua.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mt-5">
+        <h4 class="fw-bold">¿Listo para transformar tu vida?</h4>
+        <a href="@Url.Action("Login","Usuario")" class="btn btn-dark btn-lg mt-2">
+            Inicia Sesión
+        </a>
+    </div>
+
+</div>

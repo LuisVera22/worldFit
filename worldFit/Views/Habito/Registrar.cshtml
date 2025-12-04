@@ -1,0 +1,60 @@
+﻿@model Dominio.Entidad.Entidad.Habito
+
+@{
+    ViewBag.Title = "Registrar Hábito";
+}
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+                    <h2 class="text-center fw-bold text-primary mb-4">Registrar Hábito Diario</h2>
+
+                    @if (ViewBag.Mensaje != null)
+                    {
+                        <div class="alert alert-info">@ViewBag.Mensaje</div>
+                    }
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.fechaRegistro, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.fechaRegistro, new { @class = "form-control", type = "date" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.pasos, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.pasos, new { @class = "form-control", placeholder = "Ej: 10000" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.horasSueno, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.horasSueno, new { @class = "form-control", placeholder = "Ej: 7.5" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.vasosAgua, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.vasosAgua, new { @class = "form-control", placeholder = "Ej: 8" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.notas, new { @class = "form-label fw-semibold" })
+                            @Html.TextAreaFor(m => m.notas, new { @class = "form-control", rows = 3, placeholder = "Notas o comentarios..." })
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary fw-bold">Registrar</button>
+                        </div>
+                    }
+
+                    <div class="text-center mt-3">
+                        @Html.ActionLink("⬅ Volver", "MisHabitos", null, new { @class = "btn btn-link text-decoration-none" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Dominio.Entidad.Entidad.UsuarioRutina>
+
+@{
+    ViewBag.Title = "Mis Rutinas";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center fw-bold text-success mb-4">💪 Mis Rutinas</h1>
+
+    <div class="text-center mb-3">
+        <a href="@Url.Action("Perfil", "Usuario")" class="btn btn-primary">
+            ⬅️ Volver a mi perfil
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info text-center">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No tienes rutinas asignadas aún.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var r in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow border-0 h-100">
+                        <div class="card-body text-center">
+                            <h5 class="fw-bold text-success">Rutina #@r.nombreRutina</h5>
+                            <p><strong>Meta semanal:</strong> @r.metaSemanal días</p>
+                            <p><strong>Días cumplidos:</strong> @r.diasCumplidos</p>
+                            <p><strong>Fecha asignación:</strong> @r.fechaAsignacion.ToShortDateString()</p>
+                        </div>
+
+                        <div class="card-footer text-center bg-light">
+                            <a href="@Url.Action("ActualizarProgreso", "UsuarioRutina", new { idUsuarioRutina = r.idUsuarioRutina })"
+                               class="btn btn-outline-success btn-sm">
+                                ✅ Día completado
+                            </a>
+
+                            <a href="@Url.Action("Eliminar", "UsuarioRutina", new { idUsuarioRutina = r.idUsuarioRutina })"
+                               class="btn btn-outline-danger btn-sm ms-2">
+                                ❌ Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

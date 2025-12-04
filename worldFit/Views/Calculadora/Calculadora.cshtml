@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Calcular IMC";
+}
+
+<div class="container mt-5 mb-5 imc-page">
+    <div class="card shadow-lg p-4 imc-card">
+        <h3 class="mb-4 text-center fw-bold imc-title">Calculadora de IMC</h3>
+
+        @using (Html.BeginForm("Registrar", "Calculadora", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="form-group col-lg-6 col-12 mb-4">
+                    <label class="form-label fw-semibold imc-label">Peso (kg)</label>
+                    <input type="number" step="0.01" name="peso" class="form-control imc-input" required />
+                </div>
+
+                <div class="form-group col-lg-6 col-12 mb-4">
+                    <label class="form-label fw-semibold imc-label">Altura (cm)</label>
+                    <input type="number" step="0.01" name="altura" class="form-control imc-input" required />
+                </div>
+            </div>
+
+            <button type="submit" class="btn w-100 imc-btn">Calcular y Guardar</button>
+        }
+
+        @if (ViewBag.IMC != null)
+        {
+            <div class="alert mt-4 text-center imc-result">
+                <h5 class="fw-bold">@ViewBag.Mensaje</h5>
+            </div>
+
+            <div class="progress mt-3 imc-progress">
+                <div class="progress-bar
+                    @(ViewBag.Estado == "Bajo peso" ? "bg-secondary" :
+                      ViewBag.Estado == "Peso normal" ? "bg-success" :
+                      ViewBag.Estado == "Sobrepeso" ? "bg-warning" : "bg-danger")"
+                     role="progressbar"
+                     style="width:@(Math.Min((double)ViewBag.IMC * 3, 100))%">
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                @Html.ActionLink("Ver historial de IMC", "Historial", "Calculadora", null, new { @class = "btn imc-link" })
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+        }
+    </div>
+</div>

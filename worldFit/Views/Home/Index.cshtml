@@ -1,0 +1,176 @@
+@{
+    ViewBag.Title = "WorldFit - Tu Compañero Fitness";
+}
+
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row bg-gradient-primary text-white py-5">
+        <div class="col-12 text-center">
+            <img src="~/Content/img/wordlfit_logo.png" alt="WorldFit Logo" class="mb-4" style="max-width: 200px;" />
+            <h1 class="display-4 fw-bold mb-3">🌍 Bienvenido a <span class="text-warning">WorldFit</span></h1>
+            <p class="lead mb-4">Tu compañero digital para lograr un estilo de vida saludable y alcanzar tus objetivos fitness</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="@Url.Action("Registro", "Usuario")" class="btn btn-warning btn-lg px-4">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </a>
+                <a href="@Url.Action("Login", "Usuario")" class="btn btn-outline-light btn-lg px-4">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold text-success mb-3">🚀 Características Principales</h2>
+                <p class="text-muted">Descubre todas las herramientas que WorldFit tiene para ti</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Calculadora IMC -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-calculator fa-lg"></i>
+                        </div>
+                        <h4 class="card-title text-primary">📊 Calculadora IMC</h4>
+                        <p class="card-text text-muted">
+                            Calcula tu Índice de Masa Corporal y lleva un seguimiento de tu progreso a lo largo del tiempo.
+                        </p>
+                        <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-outline-primary">
+                            Calcular IMC
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rutinas de Ejercicio -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-dumbbell fa-lg"></i>
+                        </div>
+                        <h4 class="card-title text-success">💪 Rutinas de Ejercicio</h4>
+                        <p class="card-text text-muted">
+                            Accede a más de 8 rutinas predefinidas con 40+ ejercicios para todos los niveles.
+                        </p>
+                        <a href="@Url.Action("ListaRutinas", "Rutina")" class="btn btn-outline-success">
+                            Ver Rutinas
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seguimiento de Hábitos -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-chart-line fa-lg"></i>
+                        </div>
+                        <h4 class="card-title text-warning">📈 Seguimiento de Hábitos</h4>
+                        <p class="card-text text-muted">
+                            Registra tus pasos, horas de sueño, consumo de agua y mantén un diario de tu progreso.
+                        </p>
+                        <a href="@Url.Action("Index", "Habito")" class="btn btn-outline-warning">
+                            Mis Hábitos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rutinas Destacadas -->
+    <div class="bg-light py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="fw-bold text-dark mb-3">⭐ Rutinas Destacadas</h2>
+                    <p class="text-muted">Comienza con estas rutinas populares</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/img/rutinas/1.png" class="card-img-top" alt="Full Body Principiantes" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Full Body Principiantes</h5>
+                            <p class="card-text text-muted small">Ideal para quienes inician su proceso fitness</p>
+                            <span class="badge bg-success">Baja Dificultad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/img/rutinas/2.png" class="card-img-top" alt="Rutina Quema Grasa" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Rutina Quema Grasa</h5>
+                            <p class="card-text text-muted small">Ejercicios de alta intensidad para maximizar la quema calórica</p>
+                            <span class="badge bg-warning">Media Dificultad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/img/rutinas/3.png" class="card-img-top" alt="Fuerza y Tonificación" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Fuerza y Tonificación</h5>
+                            <p class="card-text text-muted small">Enfocada en aumentar fuerza y definición muscular</p>
+                            <span class="badge bg-warning">Media Dificultad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="~/Content/img/rutinas/4.png" class="card-img-top" alt="Cardio Intenso" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Cardio Intenso</h5>
+                            <p class="card-text text-muted small">Sesión enfocada en resistencia cardiovascular</p>
+                            <span class="badge bg-danger">Alta Dificultad</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold text-success mb-3">🎯 ¿Listo para comenzar tu transformación?</h2>
+                <p class="lead text-muted mb-4">
+                    Únete a miles de usuarios que ya están logrando sus objetivos con WorldFit
+                </p>
+                <a href="@Url.Action("Registro", "Usuario")" class="btn btn-success btn-lg px-5">
+                    <i class="fas fa-rocket"></i> Comenzar Ahora
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+    
+    .card {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+

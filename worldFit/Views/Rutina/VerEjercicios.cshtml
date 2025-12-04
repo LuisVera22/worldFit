@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Dominio.Entidad.Entidad.Ejercicio>
+
+@{
+    ViewBag.Title = "Ejercicios de la rutina";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-success">🏋️ Ejercicios de la rutina</h1>
+        <p class="lead text-muted">Aprende cómo realizar correctamente cada ejercicio</p>
+    </div>
+
+    <div class="row">
+        @foreach (var e in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0">
+                    <!-- 🔹 Imagen o video del ejercicio -->
+                    <img src="~/Content/img/ejercicios/@(e.idEjercicio).jpg"
+                         alt="@e.nombreEjercicio"
+                         class="card-img-top"
+                         style="height: 300px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
+
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-success fw-bold">@e.nombreEjercicio</h4>
+
+                        <p class="card-text text-muted mb-2">
+                            <strong>Series:</strong> @e.series
+                        </p>
+                        <p class="card-text text-muted">
+                            <strong>Repeticiones:</strong> @e.repeticiones
+                        </p>
+
+                 
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="@Url.Action("ListaRutinas", "Rutina")" class="btn btn-outline-success btn-lg">
+            ⬅️ Volver a Rutinas
+        </a>
+    </div>
+</div>

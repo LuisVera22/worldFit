@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Dominio.Entidad.Entidad.Habito>
+
+@{
+    ViewBag.Title = "Lista de Hábitos";
+}
+
+<main class="container py-4">
+    <h2 class="text-center text-primary mb-4 fw-bold">Todos los Hábitos</h2>
+
+    <table class="table table-striped table-bordered text-center shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Pasos</th>
+                <th>Horas de Sueño</th>
+                <th>Vasos de Agua</th>
+                <th>Notas</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.idUsuario</td>
+                    <td>@item.fechaRegistro.ToShortDateString()</td>
+                    <td>@item.pasos</td>
+                    <td>@item.horasSueno</td>
+                    <td>@item.vasosAgua</td>
+                    <td>@item.notas</td>
+                    <td>
+                        @Html.ActionLink("Editar", "Editar", new { id = item.idHabito }, new { @class = "btn btn-sm btn-outline-primary" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        @Html.ActionLink("➕ Registrar nuevo hábito", "Registrar", null, new { @class = "btn btn-success" })
+    </div>
+</main>

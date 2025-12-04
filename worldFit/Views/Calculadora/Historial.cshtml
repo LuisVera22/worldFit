@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Dominio.Entidad.Entidad.Imc>   
+
+@{
+    ViewBag.Title = "Historial IMC";
+}
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h3 class="mb-3">Historial de IMC</h3>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-info">No hay registros de IMC.</div>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Peso (kg)</th>
+                        <th>Altura (cm)</th>
+                        <th>IMC</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.peso</td>
+                            <td>@item.altura</td>
+                            <td>@item.valorIMC</td>   
+                            <td>@item.fechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-success">Nuevo Cálculo</a>
+    </div>
+</div>

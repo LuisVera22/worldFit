@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "ListaRutinas";
+}
+
+<!-- 🔹 Sección de Rutinas -->
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-success">🏋️ Rutinas Disponibles</h1>
+        <p class="lead text-muted">Explora las diferentes rutinas según tus objetivos</p>
+    </div>
+
+    <div class="row">
+        @foreach (var r in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0 rounded-4 overflow-hidden">
+                    <img src="~/Content/img/rutinas/@(r.idRutina).png"
+                         alt="@r.nombreRutina"
+                         class="card-img-top"
+                         style="height: 280px; object-fit: cover;" />
+
+                    <div class="card-body text-center p-4">
+                        <h4 class="card-title text-success fw-bold mb-3">@r.nombreRutina</h4>
+                        <p class="card-text text-muted small mb-3">@r.descripcion</p>
+
+                        <p class="card-text mb-4">
+                            <span class="badge bg-dark text-white px-3 py-2">
+                                💪 Dificultad: @r.dificultad
+                            </span>
+                        </p>
+
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="@Url.Action("VerEjercicios", "Rutina", new { idRutina = r.idRutina })"
+                               class="btn btn-outline-dark rounded-pill px-4">
+                                🔍 Ver ejercicios
+                            </a>
+
+                            <a href="@Url.Action("Agregar", "UsuarioRutina", new { idRutina = r.idRutina })"
+                               class="btn btn-success rounded-pill px-4">
+                                ➕ Agregar a mi perfil
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-light text-center py-3 small text-muted">
+                        <i class="bi bi-calendar"></i>
+                        Creada:
+                        @(r.fechaCreacion != null ? ((DateTime)r.fechaCreacion).ToShortDateString() : "Sin fecha")
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
