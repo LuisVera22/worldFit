@@ -218,6 +218,8 @@
     <Content Include="Views\Rutina\ListaRutinas.cshtml" />
     <Content Include="Views\Rutina\VerEjercicios.cshtml" />
     <Content Include="Views\UsuarioRutina\MisRutinas.cshtml" />
+    <Content Include="Views\Usuario\_HistorialIMC.cshtml" />
+    <Content Include="Views\Usuario\_Habitos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

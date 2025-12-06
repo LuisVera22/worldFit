@@ -326,3 +326,78 @@
         background: var(--wf-primary);
         color: var(--wf-dark) !important;
     }
+
+
+/* Página de perfil */
+/* Fondo claro general */
+.profile-light {
+    background: #f8f9fa;
+    color: #333;
+}
+
+/* Cards limpias */
+.light-card {
+    background: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+}
+
+    /* Títulos */
+    .light-card h4,
+    .light-card h2 {
+        color: #222;
+    }
+
+/* Botones */
+.light-btn {
+    background: var(--wf-primary);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+    .light-btn:hover {
+        background: var(--wf-primary-dark);
+    }
+
+.light-btn-outline {
+    border: 1px solid var(--wf-primary);
+    color: var(--wf-primary);
+    font-weight: 600;
+}
+
+    .light-btn-outline:hover {
+        background: var(--wf-primary);
+        color: white;
+    }
+
+/* Tablas */
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f2f4f6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.table-light th {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--wf-primary);
+    border-radius: 6px;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--wf-primary);
+    border-color: var(--wf-primary);
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #bbb;
+}
+
