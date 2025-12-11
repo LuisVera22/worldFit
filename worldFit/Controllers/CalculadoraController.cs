@@ -1,9 +1,6 @@
 ﻿using Dominio.Entidad.Entidad;
 using Infraestructura.SQL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace worldFit.Controllers
@@ -12,6 +9,9 @@ namespace worldFit.Controllers
     {
         imcDAO _imc = new imcDAO();
 
+        // ============================
+        //   CALCULADORA IMC
+        // ============================
         public ActionResult Calculadora()
         {
             return View();
@@ -49,13 +49,12 @@ namespace worldFit.Controllers
                 idUsuario = idUsuario,
                 peso = peso,
                 altura = altura,
-                valorIMC = imc,
+                imcCalculado = imc,
                 fechaRegistro = DateTime.Now
             };
 
             _imc.Add(registro);
 
-        
             ViewBag.IMC = imc;
             ViewBag.Mensaje = $"Tu IMC es {imc} → {estado}";
             ViewBag.Estado = estado;
@@ -75,7 +74,9 @@ namespace worldFit.Controllers
         }
 
 
-
+        // ============================
+        //   CÁLCULO DE CALORÍAS
+        // ============================
         [HttpGet]
         public ActionResult Calorias()
         {
@@ -91,48 +92,37 @@ namespace worldFit.Controllers
                 return View();
             }
 
-            // 1️⃣ Calcular TMB (Tasa Metabólica Basal)
-            double tmb;
-            if (genero == "masculino")
-                tmb = (10 * (double)peso) + (6.25 * (double)altura) - (5 * edad) + 5;
-            else
-                tmb = (10 * (double)peso) + (6.25 * (double)altura) - (5 * edad) - 161;
+            // 1) Calcular TMB (Harris-Benedict)
+            double tmb = (genero == "masculino")
+                ? (10 * (double)peso) + (6.25 * (double)altura) - (5 * edad) + 5
+                : (10 * (double)peso) + (6.25 * (double)altura) - (5 * edad) - 161;
 
-            // 2️⃣ Factor de actividad
+            // 2) Factor de actividad
             double factor = 1.2;
-
             switch (actividad)
             {
-                case "sedentario":
-                    factor = 1.2;
-                    break;
-                case "ligero":
-                    factor = 1.375;
-                    break;
-                case "moderado":
-                    factor = 1.55;
-                    break;
-                case "intenso":
-                    factor = 1.725;
-                    break;
-                case "muyintenso":
-                    factor = 1.9;
-                    break;
+                case "ligero": factor = 1.375; break;
+                case "moderado": factor = 1.55; break;
+                case "intenso": factor = 1.725; break;
+                case "muyintenso": factor = 1.9; break;
             }
+
             double calorias = tmb * factor;
 
-            // 3️⃣ Ajuste según objetivo
+            // 3) Ajustar según objetivo
             if (objetivo == "bajar") calorias -= 500;
             if (objetivo == "subir") calorias += 500;
 
             ViewBag.Calorias = Math.Round(calorias, 0);
-            ViewBag.Mensaje = $"Tu requerimiento calórico diario estimado es {Math.Round(calorias)} kcal.";
+            ViewBag.Mensaje = $"Tu requerimiento calórico estimado es {Math.Round(calorias)} kcal.";
 
             return View();
         }
 
 
-
+        // ============================
+        //   CÁLCULO DE MACROS
+        // ============================
         [HttpGet]
         public ActionResult Macros()
         {
@@ -148,56 +138,42 @@ namespace worldFit.Controllers
                 return View();
             }
 
-            // Porcentajes según tipo de dieta
             double pctCarb = 0, pctProt = 0, pctGrasa = 0;
 
             switch (tipo)
             {
-                case "equilibrado": // 40/30/30
-                    pctCarb = 0.40; pctProt = 0.30; pctGrasa = 0.30;
-                    break;
-                case "bajoCarb": // 20/40/40
-                    pctCarb = 0.20; pctProt = 0.40; pctGrasa = 0.40;
-                    break;
-                case "altoProt": // 30/40/30
-                    pctCarb = 0.30; pctProt = 0.40; pctGrasa = 0.30;
-                    break;
-                case "cetogenico": // 5/25/70
-                    pctCarb = 0.05; pctProt = 0.25; pctGrasa = 0.70;
-                    break;
-                default:
-                    pctCarb = 0.40; pctProt = 0.30; pctGrasa = 0.30;
-                    break;
+                case "equilibrado": pctCarb = 0.40; pctProt = 0.30; pctGrasa = 0.30; break;
+                case "bajoCarb": pctCarb = 0.20; pctProt = 0.40; pctGrasa = 0.40; break;
+                case "altoProt": pctCarb = 0.30; pctProt = 0.40; pctGrasa = 0.30; break;
+                case "cetogenico": pctCarb = 0.05; pctProt = 0.25; pctGrasa = 0.70; break;
+                default: pctCarb = 0.40; pctProt = 0.30; pctGrasa = 0.30; break;
             }
 
-            // Calorías por macronutriente
             double kcalCarb = calorias * pctCarb;
             double kcalProt = calorias * pctProt;
             double kcalGrasa = calorias * pctGrasa;
 
-            // Gramos totales
             double gCarb = kcalCarb / 4;
             double gProt = kcalProt / 4;
             double gGrasa = kcalGrasa / 9;
 
-            // Por comida
             double carbComida = gCarb / comidas;
             double protComida = gProt / comidas;
             double grasaComida = gGrasa / comidas;
 
-            // Enviar resultados a la vista
             ViewBag.Calorias = calorias;
             ViewBag.Comidas = comidas;
             ViewBag.Tipo = tipo;
-            ViewBag.Carb = Math.Round(gCarb, 0);
-            ViewBag.Prot = Math.Round(gProt, 0);
-            ViewBag.Grasa = Math.Round(gGrasa, 0);
-            ViewBag.CarbComida = Math.Round(carbComida, 0);
-            ViewBag.ProtComida = Math.Round(protComida, 0);
-            ViewBag.GrasaComida = Math.Round(grasaComida, 0);
+
+            ViewBag.Carb = Math.Round(gCarb);
+            ViewBag.Prot = Math.Round(gProt);
+            ViewBag.Grasa = Math.Round(gGrasa);
+
+            ViewBag.CarbComida = Math.Round(carbComida);
+            ViewBag.ProtComida = Math.Round(protComida);
+            ViewBag.GrasaComida = Math.Round(grasaComida);
 
             return View();
         }
-
     }
 }

@@ -1,71 +1,206 @@
 ﻿@{
     ViewBag.Title = "Perfil de Usuario";
+
+    var historial = ViewBag.Historial as List<Dominio.Entidad.Entidad.Imc>;
+    var habitos = ViewBag.Habitos as List<Dominio.Entidad.Entidad.Habito>;
+    var rutinas = ViewBag.Rutinas as List<Dominio.Entidad.Entidad.UsuarioRutina>;
 }
 
-<div class="container p-5 profile-light">
+<div class="container mt-4">
 
-    <!-- PERFIL -->
-    <div class="card p-4 border-0 light-card mb-4">
-        <h2 class="fw-bold text-dark mb-1">👤 Bienvenido, @ViewBag.Nombre</h2>
-        <p class="text-muted mb-2">@ViewBag.Correo</p>
+    <!-- ENCABEZADO PERFIL -->
+    <div class="card shadow-lg p-4 border-0">
+        <h2 class="text-center text-primary fw-bold">👤 Bienvenido, @ViewBag.Nombre</h2>
+        <hr />
+        <p><strong>Correo:</strong> @ViewBag.Correo</p>
 
-        <div class="d-flex gap-2 flex-wrap mt-2">
-            <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary light-btn">
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary">
                 <i class="bi bi-calculator"></i> Calcular IMC
             </a>
-            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-outline-primary light-btn-outline">
+            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Registrar Hábito
+            </a>
+            <a href="@Url.Action("Logout", "Usuario")" class="btn btn-danger">
+                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
             </a>
         </div>
     </div>
 
     <!-- HISTORIAL IMC -->
-    <div class="card p-4 border-0 light-card mb-4">
-        <h4 class="fw-bold text-dark">📊 Historial de IMC</h4>
+    <div class="card shadow mt-4 p-4 border-0">
+        <h4 class="text-primary fw-bold">📊 Historial de IMC</h4>
 
-        <div id="imc-container">
-            @Html.Action("HistorialIMC", "Usuario", new { pageIMC = 1 })
-        </div>
+        @if (historial != null && historial.Any())
+        {
+            <table class="table table-striped mt-3 text-center align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Peso (kg)</th>
+                        <th>Altura (cm)</th>
+                        <th>IMC</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in historial)
+                    {
+                        <tr>
+                            <td>@item.peso</td>
+                            <td>@item.altura</td>
+                            <td>@item.imcCalculado</td>
+                            <td>@item.fechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">Aún no tienes cálculos de IMC registrados.</p>
+        }
     </div>
 
-    <!-- HÁBITOS -->
-    <div class="card p-4 border-0 light-card mb-4">
-        <h4 class="fw-bold text-dark">🧘‍♀️ Hábitos Registrados</h4>
+    <!-- HABITOS -->
+    <div class="card shadow mt-4 p-4 border-0">
+        <h4 class="text-success fw-bold">🧘‍♀️ Hábitos Registrados</h4>
 
-        <div id="habitos-container">
-            @Html.Action("Habitos", "Usuario", new { pageHabitos = 1 })
-        </div>
+        @if (habitos != null && habitos.Any())
+        {
+            <table class="table table-striped mt-3 text-center align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Pasos</th>
+                        <th>Horas de Sueño</th>
+                        <th>Vasos de Agua</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var h in habitos)
+                    {
+                        <tr>
+                            <td>@h.fechaRegistro.ToString("dd/MM/yyyy")</td>
+                            <td>@h.pasos</td>
+                            <td>@h.horasSueno</td>
+                            <td>@h.vasosAgua</td>
+                            <td>@h.notas</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">No tienes hábitos registrados todavía.</p>
+        }
     </div>
 
-</div>
+    <!-- RUTINAS ASIGNADAS -->
+    <div class="card shadow mt-4 p-4 border-0">
+        <h4 class="text-success fw-bold">🏋️‍♂️ Rutinas Asignadas</h4>
 
-@section Scripts {
+        @if (rutinas != null && rutinas.Any())
+        {
+            <div class="row mt-3">
+                @foreach (var r in rutinas)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body text-center">
+                                <h5 class="fw-bold text-primary">@r.nombreRutina</h5>
+                                <p><strong>Meta semanal:</strong> @r.metaSemanal días</p>
+                                <p><strong>Días cumplidos:</strong> @r.diasCumplidos</p>
+                                <p><strong>Fecha asignación:</strong> @r.fechaAsignacion.ToShortDateString()</p>
+
+                                <!-- MOSTRAR EJERCICIOS DE LA RUTINA -->
+                                <button class="btn btn-outline-primary btn-sm mt-2"
+                                        onclick="cargarEjercicios(@r.idRutina, '@r.nombreRutina')">
+                                    🏋️ Ver ejercicios
+                                </button>
+
+                            </div>
+
+                            <div class="card-footer text-center bg-light">
+                                <a href="@Url.Action("ActualizarProgreso", "UsuarioRutina", new { idUsuarioRutina = r.idUsuarioRutina })"
+                                   class="btn btn-outline-success btn-sm">
+                                    ✅ Día completado
+                                </a>
+
+                                <a href="@Url.Action("Eliminar", "UsuarioRutina", new { idUsuarioRutina = r.idUsuarioRutina })"
+                                   class="btn btn-outline-danger btn-sm ms-2">
+                                    ❌ Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No tienes rutinas asignadas todavía.</p>
+        }
+    </div>
+    <!-- MODAL: EJERCICIOS DE LA RUTINA -->
+    <div class="modal fade" id="modalEjercicios" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="tituloModalEjercicios">Ejercicios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="contenidoEjercicios">
+                    <p class="text-center text-muted">Cargando ejercicios...</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Paginación AJAX para IMC
-        $(document).on("click", ".imc-page-link", function (e) {
-            e.preventDefault();
+        function cargarEjercicios(idRutina, nombreRutina) {
 
-            var page = $(this).data("page");
-            if (!page || page < 1) return;
+            // Cambiar título del modal
+            document.getElementById("tituloModalEjercicios").innerText =
+                "Ejercicios de la rutina: " + nombreRutina;
 
-            $.get("@Url.Action("HistorialIMC", "Usuario")", { pageIMC: page })
-                .done(function (html) {
-                    $("#imc-container").html(html);
+            // Mostrar modal
+            var modal = new bootstrap.Modal(document.getElementById('modalEjercicios'));
+            modal.show();
+
+            // Mostrar carga
+            document.getElementById("contenidoEjercicios").innerHTML =
+                "<p class='text-center text-muted'>Cargando ejercicios...</p>";
+
+            // Llamar acción MVC que retorna un partial
+            fetch('/Rutina/ObtenerEjercicios?idRutina=' + idRutina)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("contenidoEjercicios").innerHTML = html;
                 });
-        });
+        }
 
-        // Paginación AJAX para Hábitos
-        $(document).on("click", ".habito-page-link", function (e) {
-            e.preventDefault();
+        function eliminarEjercicio(idEjercicioUsuario) {
 
-            var page = $(this).data("page");
-            if (!page || page < 1) return;
+            if (!confirm("¿Eliminar este ejercicio de tu rutina?")) return;
 
-            $.get("@Url.Action("Habitos", "Usuario")", { pageHabitos: page })
-                .done(function (html) {
-                    $("#habitos-container").html(html);
+            fetch('/Rutina/EliminarEjercicioUsuario?idEjercicioUsuario=' + idEjercicioUsuario)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("row-" + idEjercicioUsuario).remove();
+                    }
                 });
-        });
+        }
+
+
+
     </script>
-}
+
+
+</div>

@@ -2,76 +2,42 @@
 
 @{
     ViewBag.Title = "Mis Hábitos";
-    var habitos = Model.OrderByDescending(h => h.fechaRegistro).ToList();
-    var tieneHabitos = habitos.Any();
 }
 
-<main class="container py-4 habits-page">
+<main class="container py-4">
+    <h2 class="text-center text-success fw-bold mb-4">Mis Hábitos Registrados</h2>
 
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-            <h2 class="fw-bold habits-title mb-1">Mis hábitos registrados</h2>
-            <p class="habits-subtitle mb-0">Tu progreso diario en pasos, sueño y agua.</p>
-        </div>
-    </div>
-
-    <!-- SI NO HAY REGISTROS -->
-    @if (!tieneHabitos)
+    @if (!Model.Any())
     {
-        <div class="card habits-card text-center p-4 mb-4">
-            <p class="text-muted">Aún no has registrado ningún hábito.</p>
-            @Html.ActionLink("Comenzar ahora", "Registrar", null, new { @class = "btn habits-btn-primary mt-3" })
+        <div class="alert alert-info text-center">Aún no has registrado ningún hábito.</div>
+        <div class="text-center">
+            @Html.ActionLink("Registrar nuevo hábito", "Registrar", null, new { @class = "btn btn-primary" })
         </div>
     }
     else
     {
-        <!-- GRID DE HÁBITOS -->
-        <div class="row row-cols-1 row-cols-md-3 g-3">
-            @foreach (var h in habitos)
+        <div class="row">
+            @foreach (var h in Model)
             {
-                <div class="col">
-                    <div class="card habits-card h-100">
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0">
                         <div class="card-body">
-
-                            <!-- Fecha -->
-                            <div class="mb-2">
-                                <span class="habits-badge">📅 @h.fechaRegistro.ToString("dd/MM/yyyy")</span>
-                            </div>
-
-                            <!-- Datos -->
-                            <ul class="list-unstyled mb-2">
-                                <li class="mb-1">
-                                    <span class="habits-label">Pasos:</span>
-                                    <span class="habits-value">@h.pasos</span>
-                                </li>
-                                <li class="mb-1">
-                                    <span class="habits-label">Horas de sueño:</span>
-                                    <span class="habits-value">@h.horasSueno</span>
-                                </li>
-                                <li class="mb-1">
-                                    <span class="habits-label">Vasos de agua:</span>
-                                    <span class="habits-value">@h.vasosAgua</span>
-                                </li>
-                            </ul>
-
-                            @if (!string.IsNullOrWhiteSpace(h.notas))
-                            {
-                                <p class="text-muted small mb-0">@h.notas</p>
-                            }
+                            <h5 class="card-title text-primary">📅 @h.fechaRegistro.ToShortDateString()</h5>
+                            <p><strong>Pasos:</strong> @h.pasos</p>
+                            <p><strong>Horas de sueño:</strong> @h.horasSueno</p>
+                            <p><strong>Vasos de agua:</strong> @h.vasosAgua</p>
+                            <p class="text-muted small">@h.notas</p>
                         </div>
                     </div>
                 </div>
             }
         </div>
 
-        <!-- ACCIONES INFERIORES -->
-        <div class="d-flex justify-content-center gap-2 mt-4">
-            @Html.ActionLink("Registrar nuevo hábito", "Registrar", null,
-                new { @class = "btn habits-btn-primary" })
-
-            @Html.ActionLink("Volver", "Perfil", "Usuario", null,
-                new { @class = "btn habits-btn-outline" })
+        <div class="text-center mt-4">
+            @Html.ActionLink("➕ Registrar nuevo hábito", "Registrar", null, new { @class = "btn btn-success" })
+        </div>
+        <div class="text-center mt-4">
+            @Html.ActionLink("⬅ Volver", "Perfil", "Usuario", null, new { @class = "btn btn-success" })
         </div>
     }
 </main>
