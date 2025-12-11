@@ -1,12 +1,14 @@
 ﻿@{
     ViewBag.Title = "Perfil de Usuario";
+
     var historial = ViewBag.Historial as List<Dominio.Entidad.Entidad.Imc>;
     var habitos = ViewBag.Habitos as List<Dominio.Entidad.Entidad.Habito>;
+    var rutinas = ViewBag.Rutinas as List<Dominio.Entidad.Entidad.UsuarioRutina>;
 }
 
 <div class="container mt-4">
 
-
+    <!-- ENCABEZADO PERFIL -->
     <div class="card shadow-lg p-4 border-0">
         <h2 class="text-center text-primary fw-bold">👤 Bienvenido, @ViewBag.Nombre</h2>
         <hr />
@@ -25,11 +27,11 @@
         </div>
     </div>
 
-
+    <!-- HISTORIAL IMC -->
     <div class="card shadow mt-4 p-4 border-0">
         <h4 class="text-primary fw-bold">📊 Historial de IMC</h4>
 
-        @if (historial != null && historial.Count > 0)
+        @if (historial != null && historial.Any())
         {
             <table class="table table-striped mt-3 text-center align-middle">
                 <thead class="table-primary">
@@ -46,9 +48,10 @@
                         <tr>
                             <td>@item.peso</td>
                             <td>@item.altura</td>
-                            <td>@item.valorIMC</td>
+                            <td>@item.imcCalculado</td>
                             <td>@item.fechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
                         </tr>
+
                     }
                 </tbody>
             </table>
@@ -59,11 +62,11 @@
         }
     </div>
 
-
+    <!-- HABITOS -->
     <div class="card shadow mt-4 p-4 border-0">
         <h4 class="text-success fw-bold">🧘‍♀️ Hábitos Registrados</h4>
 
-        @if (habitos != null && habitos.Count > 0)
+        @if (habitos != null && habitos.Any())
         {
             <table class="table table-striped mt-3 text-center align-middle">
                 <thead class="table-success">
@@ -95,13 +98,12 @@
         }
     </div>
 
+    <!-- RUTINAS ASIGNADAS -->
     <div class="card shadow mt-4 p-4 border-0">
         <h4 class="text-success fw-bold">🏋️‍♂️ Rutinas Asignadas</h4>
 
-        @if (ViewBag.Rutinas != null && ((List<Dominio.Entidad.Entidad.UsuarioRutina>)ViewBag.Rutinas).Count > 0)
+        @if (rutinas != null && rutinas.Any())
         {
-            var rutinas = (List<Dominio.Entidad.Entidad.UsuarioRutina>)ViewBag.Rutinas;
-
             <div class="row mt-3">
                 @foreach (var r in rutinas)
                 {
@@ -112,6 +114,13 @@
                                 <p><strong>Meta semanal:</strong> @r.metaSemanal días</p>
                                 <p><strong>Días cumplidos:</strong> @r.diasCumplidos</p>
                                 <p><strong>Fecha asignación:</strong> @r.fechaAsignacion.ToShortDateString()</p>
+
+                                <!-- MOSTRAR EJERCICIOS DE LA RUTINA -->
+                                <button class="btn btn-outline-primary btn-sm mt-2"
+                                        onclick="cargarEjercicios(@r.idRutina, '@r.nombreRutina')">
+                                    🏋️ Ver ejercicios
+                                </button>
+
                             </div>
 
                             <div class="card-footer text-center bg-light">
@@ -135,6 +144,63 @@
             <p class="text-muted">No tienes rutinas asignadas todavía.</p>
         }
     </div>
+    <!-- MODAL: EJERCICIOS DE LA RUTINA -->
+    <div class="modal fade" id="modalEjercicios" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="tituloModalEjercicios">Ejercicios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="contenidoEjercicios">
+                    <p class="text-center text-muted">Cargando ejercicios...</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function cargarEjercicios(idRutina, nombreRutina) {
+
+            // Cambiar título del modal
+            document.getElementById("tituloModalEjercicios").innerText =
+                "Ejercicios de la rutina: " + nombreRutina;
+
+            // Mostrar modal
+            var modal = new bootstrap.Modal(document.getElementById('modalEjercicios'));
+            modal.show();
+
+            // Mostrar carga
+            document.getElementById("contenidoEjercicios").innerHTML =
+                "<p class='text-center text-muted'>Cargando ejercicios...</p>";
+
+            // Llamar acción MVC que retorna un partial
+            fetch('/Rutina/ObtenerEjercicios?idRutina=' + idRutina)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("contenidoEjercicios").innerHTML = html;
+                });
+        }
+
+        function eliminarEjercicio(idEjercicioUsuario) {
+
+            if (!confirm("¿Eliminar este ejercicio de tu rutina?")) return;
+
+            fetch('/Rutina/EliminarEjercicioUsuario?idEjercicioUsuario=' + idEjercicioUsuario)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("row-" + idEjercicioUsuario).remove();
+                    }
+                });
+        }
+
+
+
+    </script>
 
 
 </div>

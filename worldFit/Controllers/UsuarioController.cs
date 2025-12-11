@@ -95,6 +95,8 @@ namespace worldFit.Controllers
             var rutinas = usuarioRutinaDAO.ListarRutinasPorUsuario(idUsuario);
             ViewBag.Rutinas = rutinas;
 
+            var ejercicios = new ejercicioDAO().ListarEjerciciosDelUsuario(idUsuario);
+            ViewBag.Ejercicios = ejercicios;
 
             return View();
 
@@ -107,7 +109,26 @@ namespace worldFit.Controllers
         }
 
 
-        
+        public ActionResult AgregarEjercicioUsuario(int idEjercicio)
+        {
+            int idUsuario = Convert.ToInt32(Session["UsuarioID"]);
+            new ejercicioDAO().AgregarEjercicioUsuario(idUsuario, idEjercicio);
+            return RedirectToAction("Perfil", "Usuario");
+        }
+
+        public ActionResult MisEjercicios()
+        {
+            if (Session["UsuarioID"] == null)
+                return RedirectToAction("Login", "Usuario");
+
+            int idUsuario = (int)Session["UsuarioID"];
+
+            var lista = new ejercicioDAO().ListarEjerciciosDelUsuario(idUsuario);
+
+            return View(lista);
+        }
+
+
 
     }
 
