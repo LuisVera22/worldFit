@@ -1,28 +1,33 @@
-﻿@{
+﻿@using System.Collections.Generic
+@using Dominio.Entidad.Entidad
+
+@{
     ViewBag.Title = "Perfil de Usuario";
 
-    var historial = ViewBag.Historial as List<Dominio.Entidad.Entidad.Imc>;
-    var habitos = ViewBag.Habitos as List<Dominio.Entidad.Entidad.Habito>;
-    var rutinas = ViewBag.Rutinas as List<Dominio.Entidad.Entidad.UsuarioRutina>;
+    var historial = ViewBag.Historial as List<Imc>;
+    var habitos = ViewBag.Habitos as List<Habito>;
+    var rutinas = ViewBag.Rutinas as List<UsuarioRutina>;
+
+    int paginaActualHistorial = ViewBag.HistorialPaginaActual != null ? (int)ViewBag.HistorialPaginaActual : 1;
+    int totalPaginasHistorial = ViewBag.HistorialTotalPaginas != null ? (int)ViewBag.HistorialTotalPaginas : 1;
+
+    int paginaActualHabitos = ViewBag.HabitosPaginaActual != null ? (int)ViewBag.HabitosPaginaActual : 1;
+    int totalPaginasHabitos = ViewBag.HabitosTotalPaginas != null ? (int)ViewBag.HabitosTotalPaginas : 1;
 }
 
-<div class="container mt-4">
+<div class="container p-5 profile-light">
 
-    <!-- ENCABEZADO PERFIL -->
-    <div class="card shadow-lg p-4 border-0">
-        <h2 class="text-center text-primary fw-bold">👤 Bienvenido, @ViewBag.Nombre</h2>
-        <hr />
-        <p><strong>Correo:</strong> @ViewBag.Correo</p>
+    <!-- PERFIL -->
+    <div class="card p-4 border-0 light-card mb-4">
+        <h2 class="fw-bold text-dark mb-1">👤 Bienvenido, @ViewBag.Nombre</h2>
+        <p class="text-muted mb-2">@ViewBag.Correo</p>
 
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary">
+        <div class="d-flex gap-2 flex-wrap mt-2">
+            <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary light-btn">
                 <i class="bi bi-calculator"></i> Calcular IMC
             </a>
-            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-success">
+            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-outline-primary light-btn-outline">
                 <i class="bi bi-plus-circle"></i> Registrar Hábito
-            </a>
-            <a href="@Url.Action("Logout", "Usuario")" class="btn btn-danger">
-                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
             </a>
         </div>
     </div>
@@ -51,10 +56,42 @@
                             <td>@item.imcCalculado</td>
                             <td>@item.fechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
                         </tr>
-
                     }
                 </tbody>
             </table>
+
+            <!-- Paginación Historial IMC -->
+            <nav aria-label="Paginación historial IMC">
+                <ul class="pagination justify-content-center">
+
+                    <!-- Anterior -->
+                    <li class="page-item @(paginaActualHistorial == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Perfil", new { historialPage = paginaActualHistorial - 1, habitosPage = paginaActualHabitos })">
+                            «
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= totalPaginasHistorial; i++)
+                    {
+                        <li class="page-item @(i == paginaActualHistorial ? "active" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("Perfil", new { historialPage = i, habitosPage = paginaActualHabitos })">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    <!-- Siguiente -->
+                    <li class="page-item @(paginaActualHistorial == totalPaginasHistorial ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Perfil", new { historialPage = paginaActualHistorial + 1, habitosPage = paginaActualHabitos })">
+                            »
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
         }
         else
         {
@@ -62,7 +99,7 @@
         }
     </div>
 
-    <!-- HABITOS -->
+    <!-- HÁBITOS -->
     <div class="card shadow mt-4 p-4 border-0">
         <h4 class="text-success fw-bold">🧘‍♀️ Hábitos Registrados</h4>
 
@@ -91,6 +128,37 @@
                     }
                 </tbody>
             </table>
+
+            <!-- Paginación Hábitos -->
+            <nav aria-label="Paginación hábitos">
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item @(paginaActualHabitos == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Perfil", new { historialPage = paginaActualHistorial, habitosPage = paginaActualHabitos - 1 })">
+                            «
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= totalPaginasHabitos; i++)
+                    {
+                        <li class="page-item @(i == paginaActualHabitos ? "active" : "")">
+                            <a class="page-link"
+                               href="@Url.Action("Perfil", new { historialPage = paginaActualHistorial, habitosPage = i })">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item @(paginaActualHabitos == totalPaginasHabitos ? "disabled" : "")">
+                        <a class="page-link"
+                           href="@Url.Action("Perfil", new { historialPage = paginaActualHistorial, habitosPage = paginaActualHabitos + 1 })">
+                            »
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
         }
         else
         {
@@ -144,6 +212,7 @@
             <p class="text-muted">No tienes rutinas asignadas todavía.</p>
         }
     </div>
+
     <!-- MODAL: EJERCICIOS DE LA RUTINA -->
     <div class="modal fade" id="modalEjercicios" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -162,22 +231,21 @@
         </div>
     </div>
 
+</div>
+
+<div class="container mt-4">
     <script>
         function cargarEjercicios(idRutina, nombreRutina) {
 
-            // Cambiar título del modal
             document.getElementById("tituloModalEjercicios").innerText =
                 "Ejercicios de la rutina: " + nombreRutina;
 
-            // Mostrar modal
             var modal = new bootstrap.Modal(document.getElementById('modalEjercicios'));
             modal.show();
 
-            // Mostrar carga
             document.getElementById("contenidoEjercicios").innerHTML =
                 "<p class='text-center text-muted'>Cargando ejercicios...</p>";
 
-            // Llamar acción MVC que retorna un partial
             fetch('/Rutina/ObtenerEjercicios?idRutina=' + idRutina)
                 .then(res => res.text())
                 .then(html => {
@@ -197,10 +265,5 @@
                     }
                 });
         }
-
-
-
     </script>
-
-
 </div>

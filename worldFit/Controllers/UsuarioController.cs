@@ -73,7 +73,7 @@ namespace worldFit.Controllers
         }
 
 
-        public ActionResult Perfil()
+        public ActionResult Perfil(int? historialPage, int? habitosPage)
         {
             if (Session["UsuarioID"] == null)
                 return RedirectToAction("Login");
@@ -83,14 +83,49 @@ namespace worldFit.Controllers
             ViewBag.Nombre = Session["UsuarioNombre"];
             ViewBag.Correo = Session["UsuarioCorreo"];
 
-            var historial = new imcDAO().HistorialPorUsuario(idUsuario);
-            ViewBag.Historial = historial;
+            // Tamaños de página
+            const int pageSizeHistorial = 5;
+            const int pageSizeHabitos = 5;
 
-         
-            var habitos = new habitoDAO().ListarPorUsuario(idUsuario);
-            ViewBag.Habitos = habitos;
+            // HISTORIAL IMC
+            var historialCompleto = new imcDAO()
+                .HistorialPorUsuario(idUsuario)
+                .OrderByDescending(h => h.fechaRegistro)  // ordenado por fecha
+                .ToList();
 
-            // Rutinas
+            int paginaHistorialActual = historialPage ?? 1;
+            int totalHistorial = historialCompleto.Count();
+
+            var historialPaginado = historialCompleto
+                .Skip((paginaHistorialActual - 1) * pageSizeHistorial)
+                .Take(pageSizeHistorial)
+                .ToList();
+
+            ViewBag.Historial = historialPaginado;
+            ViewBag.HistorialPaginaActual = paginaHistorialActual;
+            ViewBag.HistorialTotalPaginas =
+                (int)Math.Ceiling((double)totalHistorial / pageSizeHistorial);
+
+            // HÁBITOS
+            var habitosCompletos = new habitoDAO()
+                .ListarPorUsuario(idUsuario)
+                .OrderByDescending(h => h.fechaRegistro)
+                .ToList();
+
+            int paginaHabitosActual = habitosPage ?? 1;
+            int totalHabitos = habitosCompletos.Count();
+
+            var habitosPaginados = habitosCompletos
+                .Skip((paginaHabitosActual - 1) * pageSizeHabitos)
+                .Take(pageSizeHabitos)
+                .ToList();
+
+            ViewBag.Habitos = habitosPaginados;
+            ViewBag.HabitosPaginaActual = paginaHabitosActual;
+            ViewBag.HabitosTotalPaginas =
+                (int)Math.Ceiling((double)totalHabitos / pageSizeHabitos);
+
+            // RUTINAS Y EJERCICIOS
             var usuarioRutinaDAO = new usuarioRutinaDAO();
             var rutinas = usuarioRutinaDAO.ListarRutinasPorUsuario(idUsuario);
             ViewBag.Rutinas = rutinas;
@@ -99,8 +134,8 @@ namespace worldFit.Controllers
             ViewBag.Ejercicios = ejercicios;
 
             return View();
-
         }
+
 
         public ActionResult Logout()
         {
@@ -127,8 +162,6 @@ namespace worldFit.Controllers
 
             return View(lista);
         }
-
-
 
     }
 

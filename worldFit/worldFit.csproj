@@ -169,6 +169,7 @@
     <Content Include="Content\img\rutinas\7.png" />
     <Content Include="Content\img\rutinas\8.png" />
     <Content Include="Content\img\wordlfit_logo.png" />
+    <Content Include="Content\worldfit.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
