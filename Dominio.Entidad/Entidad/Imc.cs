@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Dominio.Entidad.Entidad
 {
@@ -8,7 +12,7 @@ namespace Dominio.Entidad.Entidad
         public int idUsuario { get; set; }
         public decimal peso { get; set; }
         public decimal altura { get; set; }
-        public decimal imcCalculado { get; set; }
+        public decimal valorIMC { get; set; }
         public DateTime fechaRegistro { get; set; }
     }
 }

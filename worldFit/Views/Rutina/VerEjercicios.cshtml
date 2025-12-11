@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "Ejercicios de la rutina";
-    bool rutinaAsignada = ViewBag.RutinaAsignada ?? false;
-    int idRutina = ViewBag.IdRutina;
 }
 
 <div class="container mt-5">
@@ -17,34 +15,23 @@
         {
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow border-0">
-
+                    <!-- 🔹 Imagen o video del ejercicio -->
                     <img src="~/Content/img/ejercicios/@(e.idEjercicio).jpg"
                          alt="@e.nombreEjercicio"
                          class="card-img-top"
-                         style="height: 300px; object-fit: cover;" />
+                         style="height: 300px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;" />
 
                     <div class="card-body text-center">
                         <h4 class="card-title text-success fw-bold">@e.nombreEjercicio</h4>
 
-                        <p class="text-muted"><strong>Series:</strong> @e.series</p>
-                        <p class="text-muted"><strong>Repeticiones:</strong> @e.repeticiones</p>
+                        <p class="card-text text-muted mb-2">
+                            <strong>Series:</strong> @e.series
+                        </p>
+                        <p class="card-text text-muted">
+                            <strong>Repeticiones:</strong> @e.repeticiones
+                        </p>
 
-                        @if (rutinaAsignada)
-                        {
-                            <!-- Si la rutina está asignada → permitir agregar -->
-                            <a href="@Url.Action("AgregarEjercicioUsuario", "Ejercicio", new { idEjercicio = e.idEjercicio })"
-                               class="btn btn-success mt-2">
-                                ➕ Agregar a mis ejercicios
-                            </a>
-                        }
-                        else
-                        {
-                            <!-- Si NO está asignada → mostrar modal -->
-                            <button class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#modalAgregarRutina">
-                                ⚠ Primero agrega la rutina
-                            </button>
-                        }
-
+                 
                     </div>
                 </div>
             </div>
@@ -55,35 +42,5 @@
         <a href="@Url.Action("ListaRutinas", "Rutina")" class="btn btn-outline-success btn-lg">
             ⬅️ Volver a Rutinas
         </a>
-    </div>
-</div>
-
-<!-- ============================= -->
-<!-- MODAL PARA AGREGAR RUTINA -->
-<!-- ============================= -->
-
-<div class="modal fade" id="modalAgregarRutina" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Agregar rutina</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body text-center">
-                <p class="fs-5">Para guardar ejercicios, primero debes agregar esta rutina.</p>
-
-                <a href="@Url.Action("Agregar", "UsuarioRutina", new { idRutina = ViewBag.IdRutina })"
-                   class="btn btn-success">
-                    ➕ Agregar Rutina
-                </a>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-
     </div>
 </div>

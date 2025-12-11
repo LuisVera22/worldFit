@@ -1,96 +1,92 @@
-﻿using Dominio.Entidad.Entidad;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Dominio.Entidad.Entidad;
 
-public class usuarioRutinaDAO
+namespace Infraestructura.SQL
 {
-    string cnx = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
-
-    // Listar rutinas asignadas a un usuario
-    public List<UsuarioRutina> ListarRutinasPorUsuario(int idUsuario)
+    public class usuarioRutinaDAO
     {
-        var lista = new List<UsuarioRutina>();
-
-        using (SqlConnection cn = new SqlConnection(cnx))
+        public string AgregarRutinaUsuario(int idUsuario, int idRutina, int metaSemanal)
         {
-            cn.Open();
-            SqlCommand cmd = new SqlCommand("sp_listarRutinasPorUsuario", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-
-            using (SqlDataReader dr = cmd.ExecuteReader())
+            string mensaje = "";
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("sp_agregarUsuarioRutina", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@idRutina", idRutina);
+                cmd.Parameters.AddWithValue("@metaSemanal", metaSemanal);
+                cmd.ExecuteNonQuery();
+                mensaje = "Rutina agregada correctamente a tu perfil.";
+            }
+            return mensaje;
+        }
+
+        public List<UsuarioRutina> ListarRutinasPorUsuario(int idUsuario)
+        {
+            List<UsuarioRutina> lista = new List<UsuarioRutina>();
+
+            using (SqlConnection cn = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("sp_listarRutinasPorUsuario", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+                SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
                     lista.Add(new UsuarioRutina
                     {
-                        idUsuarioRutina = dr.GetInt32(0),
-                        idUsuario = dr.GetInt32(1),
-                        idRutina = dr.GetInt32(2),
-                        nombreRutina = dr.GetString(3),
-                        dificultad = dr.GetString(5),
-                        metaSemanal = dr.GetInt32(6),
-                        diasCumplidos = dr.GetInt32(7),
-                        fechaAsignacion = dr.GetDateTime(8)
+                        idUsuarioRutina = Convert.ToInt32(dr["idUsuarioRutina"]),
+                        idUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        idRutina = Convert.ToInt32(dr["idRutina"]),
+                        nombreRutina = dr["nombreRutina"].ToString(),
+                        metaSemanal = Convert.ToInt32(dr["metaSemanal"]),
+                        diasCumplidos = Convert.ToInt32(dr["diasCumplidos"]),
+                        fechaAsignacion = Convert.ToDateTime(dr["fechaAsignacion"])
                     });
                 }
             }
+
+            return lista;
         }
-        return lista;
-    }
 
-    // Agregar rutina al usuario
-    public string AgregarUsuarioRutina(int idUsuario, int idRutina)
-    {
-        using (SqlConnection cn = new SqlConnection(cnx))
+        public void ActualizarProgreso(int idUsuarioRutina)
         {
-            cn.Open();
-            SqlCommand cmd = new SqlCommand("sp_agregarUsuarioRutina", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-            cmd.Parameters.AddWithValue("@idRutina", idRutina);
-
-            try
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("sp_actualizarProgresoRutina", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuarioRutina", idUsuarioRutina);
                 cmd.ExecuteNonQuery();
-                return "OK";
             }
-            catch (Exception ex)
+        }
+
+        public string EliminarRutinaUsuario(int idUsuarioRutina)
+        {
+            string mensaje = "";
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
-                return ex.Message;
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("sp_eliminarUsuarioRutina", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuarioRutina", idUsuarioRutina);
+                int filas = cmd.ExecuteNonQuery();
+
+                mensaje = filas > 0 ? "Rutina eliminada correctamente." : "No se pudo eliminar la rutina.";
             }
+            return mensaje;
         }
-    }
 
-    // Eliminar rutina del usuario
-    public void EliminarUsuarioRutina(int idUsuarioRutina)
-    {
-        using (SqlConnection cn = new SqlConnection(cnx))
-        {
-            cn.Open();
-            SqlCommand cmd = new SqlCommand("sp_eliminarUsuarioRutina", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@idUsuarioRutina", idUsuarioRutina);
-
-            cmd.ExecuteNonQuery();
-        }
-    }
-
-    // Marcar día cumplido
-    public void ActualizarProgreso(int idUsuarioRutina)
-    {
-        using (SqlConnection cn = new SqlConnection(cnx))
-        {
-            cn.Open();
-            SqlCommand cmd = new SqlCommand("sp_actualizarProgresoRutina", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@idUsuarioRutina", idUsuarioRutina);
-
-            cmd.ExecuteNonQuery();
-        }
     }
 }

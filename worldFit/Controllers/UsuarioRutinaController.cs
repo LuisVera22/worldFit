@@ -35,7 +35,7 @@ namespace worldFit.Controllers
             // Meta semanal por defecto (puedes cambiarla)
             int metaSemanal = 4;
 
-            string mensaje = _dao.AgregarUsuarioRutina(idUsuario, idRutina);
+            string mensaje = _dao.AgregarRutinaUsuario(idUsuario, idRutina, metaSemanal);
 
             TempData["Mensaje"] = mensaje;
             return RedirectToAction("MisRutinas");
@@ -51,10 +51,9 @@ namespace worldFit.Controllers
         // 🔹 Eliminar rutina del usuario
         public ActionResult Eliminar(int idUsuarioRutina)
         {
-            _dao.EliminarUsuarioRutina(idUsuarioRutina);
-            TempData["Mensaje"] = "Rutina eliminada correctamente.";
+            string mensaje = _dao.EliminarRutinaUsuario(idUsuarioRutina);
+            TempData["Mensaje"] = mensaje;
             return RedirectToAction("MisRutinas");
         }
-
     }
 }

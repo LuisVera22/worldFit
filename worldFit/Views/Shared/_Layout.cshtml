@@ -4,77 +4,153 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - WorldFit</title>
+
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/worldfit.css")
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow-sm">
+<body class="worldfit-body">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark worldfit-navbar shadow-sm">
         <div class="container">
-            
+
             <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index","Home")">
-                <img src="~/Content/img/wordlfit_logo.png" alt="WorldFit" width="40" height="40" class="me-2 rounded-circle" />
-                <span class="fw-bold">WorldFit</span>
+                <img src="~/Content/img/wordlfit_logo.png"
+                     alt="WorldFit"
+                     width="40"
+                     height="40"
+                     class="me-2 rounded-circle border border-2 border-light-subtle" />
+                <div class="d-flex flex-column">
+                    <span class="fw-bold worldfit-brand-title">WorldFit</span>
+                    <span class="worldfit-brand-subtitle">Vida saludable, cuerpo activo</span>
+                </div>
             </a>
 
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
                     aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- MENÚ -->
-            <!--<div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Usuario", null, new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("Registro", "Registro", "Usuario", null, new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("Login", "Login", "Usuario", null, new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("Acerca de", "About", "Home", null, new { @class = "nav-link" })</li>
-            <li class="nav-item">@Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })</li>
-        </ul>
-    </div>-->
-            <!-- MENÚ -->
             <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })</li>
+
+                <ul class="navbar-nav ms-auto align-items-lg-center worldfit-main-menu">
+
+                    <li class="nav-item">
+                        @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Herramientas
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end worldfit-dropdown" aria-labelledby="toolsDropdown">
+                            <li>
+                                @Html.ActionLink("IMC", "Calculadora", "Calculadora", null, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Macros", "Macros", "Calculadora", null, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Calorías", "Calorias", "Calculadora", null, new { @class = "dropdown-item" })
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        @Html.ActionLink("Acerca de", "About", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="worldfit-menu-divider mx-3"></span>
+                    </li>
 
                     @if (Session["UsuarioID"] != null)
                     {
                         <!-- Usuario logueado -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Perfil", "Usuario")">
-                                Mi Cuenta (@Session["UsuarioNombre"])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle worldfit-user-link" href="#" id="userDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i>
+                                @Session["UsuarioNombre"]
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-end worldfit-dropdown" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("Perfil", "Usuario")">
+                                        Mi cuenta
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="@Url.Action("Logout", "Usuario")">
+                                        Cerrar sesión
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-
                     }
                     else
                     {
                         <!-- Usuario no logueado -->
-                        <li class="nav-item">@Html.ActionLink("Registro", "Registro", "Usuario", null, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("Login", "Login", "Usuario", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item mt-2 me-1 mt-lg-0">
+                            @Html.ActionLink("Registro", "Registro", "Usuario", null, new { @class = "btn btn-sm worldfit-btn-outline me-lg-2 w-100 w-lg-auto" })
+                        </li>
+                        <li class="nav-item mt-2 ms-1 mt-lg-0">
+                            @Html.ActionLink("Login", "Login", "Usuario", null, new { @class = "btn btn-sm worldfit-btn-cta w-100 w-lg-auto" })
+                        </li>
                     }
-                    <li class="nav-item">@Html.ActionLink("IMC", "Calculadora", "Calculadora", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Macros", "Macros", "Calculadora", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Calorías", "Calorias", "Calculadora", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Acerca de", "About", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })</li>
+
                 </ul>
             </div>
-
         </div>
     </nav>
 
-    
-    <div class="container mt-4">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="worldfit-main">
         @RenderBody()
-        <hr />
-        <footer class="text-center text-muted">
-            <p>&copy; @DateTime.Now.Year - WorldFit | Tu salud, tu estilo de vida 💪</p>
-        </footer>
-    </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="worldfit-footer mt-5">
+        <div class="container py-4 text-center text-lg-start">
+            <div class="row align-items-center gy-3">
+
+                <div class="col-lg-4 text-center text-lg-start">
+                    <span class="fw-semibold">WorldFit</span>
+                    <p class="mb-0 small text-muted">
+                        Tu salud, tu estilo de vida 💪
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <p class="mb-0 small text-muted">
+                        &copy; @DateTime.Now.Year - Todos los derechos reservados
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="@Url.Action("Contact", "Home")" class="small worldfit-footer-link me-3">
+                        Soporte
+                    </a>
+                    <a href="@Url.Action("About", "Home")" class="small worldfit-footer-link">
+                        Acerca de WorldFit
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

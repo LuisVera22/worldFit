@@ -13,27 +13,13 @@ namespace worldFit.Controllers
         ejercicioDAO _ejercicio = new ejercicioDAO();
         public ActionResult Index()
         {
-            IEnumerable<Ejercicio> lista = _ejercicio.ListarTodos();
+            IEnumerable<Ejercicio> lista = _ejercicio.GetAll();
 
             if (lista == null)
                 lista = new List<Ejercicio>();
 
             return View(lista);
 
-        }
-
-        public ActionResult AgregarEjercicioUsuario(int idEjercicio)
-        {
-            if (Session["UsuarioID"] == null)
-                return RedirectToAction("Login", "Usuario");
-
-            int idUsuario = Convert.ToInt32(Session["UsuarioID"]);
-
-            _ejercicio.AgregarEjercicioUsuario(idUsuario, idEjercicio);
-
-            TempData["Mensaje"] = "Ejercicio agregado correctamente ✔";
-
-            return RedirectToAction("Perfil", "Usuario");
         }
     }
 }
