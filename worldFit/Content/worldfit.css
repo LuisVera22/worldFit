@@ -274,7 +274,7 @@
 .imc-btn {
     padding: 12px;
     font-weight: 600;
-    border-radius: 999px;
+    color: white;
     font-size: 1rem;
     background: linear-gradient(90deg, var(--wf-primary), var(--wf-primary-dark));
     border: none;
@@ -325,4 +325,149 @@
     .imc-link:hover {
         background: var(--wf-primary);
         color: var(--wf-dark) !important;
+    }
+
+
+/* Página de perfil */
+.profile-light {
+    background: #f8f9fa;
+    color: #333;
+}
+
+.light-card {
+    background: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+}
+
+    .light-card h4,
+    .light-card h2 {
+        color: #222;
+    }
+
+.light-btn {
+    background: var(--wf-primary);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+    .light-btn:hover {
+        background: var(--wf-primary-dark);
+    }
+
+.light-btn-outline {
+    border: 1px solid var(--wf-primary);
+    color: var(--wf-primary);
+    font-weight: 600;
+}
+
+    .light-btn-outline:hover {
+        background: var(--wf-primary);
+        color: white;
+    }
+
+/* Tablas */
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f2f4f6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.table-light th {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--wf-primary);
+    border-radius: 6px;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--wf-primary);
+    border-color: var(--wf-primary);
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #bbb;
+}
+
+
+/* --- VISTA MIS HABITOS --- */
+.habits-page {
+    background-color: #f7f9fa;
+    color: var(--wf-dark);
+}
+
+.habits-title {
+    color: var(--wf-primary-dark);
+}
+
+.habits-subtitle {
+    color: var(--wf-muted);
+    font-size: .9rem;
+}
+
+.habits-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .habits-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+.habits-badge {
+    background: #19875438;
+    color: var(--wf-dark);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.habits-label {
+    color: var(--wf-muted);
+    font-size: .9rem;
+}
+
+.habits-value {
+    font-weight: 600;
+    color: var(--wf-dark);
+}
+
+.habits-btn-primary {
+    background: var(--wf-primary);
+    color: var(--wf-dark);
+    border: none;
+    padding: 8px 18px;
+    font-weight: 600;
+    transition: background .15s ease;
+}
+
+    .habits-btn-primary:hover {
+        background: var(--wf-primary-dark);
+        color: white;
+    }
+
+.habits-btn-outline {
+    border: 1px solid var(--wf-primary);
+    color: var(--wf-primary-dark);
+    padding: 8px 18px;
+    font-weight: 600;
+    transition: all .15s ease;
+}
+
+    .habits-btn-outline:hover {
+        background: var(--wf-primary);
+        color: var(--wf-dark);
     }

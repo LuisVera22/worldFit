@@ -1,13 +1,17 @@
 ﻿@{
     ViewBag.Title = "Perfil de Usuario";
+<<<<<<< HEAD
 
     var historial = ViewBag.Historial as List<Dominio.Entidad.Entidad.Imc>;
     var habitos = ViewBag.Habitos as List<Dominio.Entidad.Entidad.Habito>;
     var rutinas = ViewBag.Rutinas as List<Dominio.Entidad.Entidad.UsuarioRutina>;
+=======
+>>>>>>> develop
 }
 
-<div class="container mt-4">
+<div class="container p-5 profile-light">
 
+<<<<<<< HEAD
     <!-- ENCABEZADO PERFIL -->
     <div class="card shadow-lg p-4 border-0">
         <h2 class="text-center text-primary fw-bold">👤 Bienvenido, @ViewBag.Nombre</h2>
@@ -16,18 +20,25 @@
 
         <div class="d-flex justify-content-center gap-3 mt-4">
             <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary">
+=======
+    <!-- PERFIL -->
+    <div class="card p-4 border-0 light-card mb-4">
+        <h2 class="fw-bold text-dark mb-1">👤 Bienvenido, @ViewBag.Nombre</h2>
+        <p class="text-muted mb-2">@ViewBag.Correo</p>
+
+        <div class="d-flex gap-2 flex-wrap mt-2">
+            <a href="@Url.Action("Calculadora", "Calculadora")" class="btn btn-primary light-btn">
+>>>>>>> develop
                 <i class="bi bi-calculator"></i> Calcular IMC
             </a>
-            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-success">
+            <a href="@Url.Action("MisHabitos", "Habito")" class="btn btn-outline-primary light-btn-outline">
                 <i class="bi bi-plus-circle"></i> Registrar Hábito
-            </a>
-            <a href="@Url.Action("Logout", "Usuario")" class="btn btn-danger">
-                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
             </a>
         </div>
     </div>
 
     <!-- HISTORIAL IMC -->
+<<<<<<< HEAD
     <div class="card shadow mt-4 p-4 border-0">
         <h4 class="text-primary fw-bold">📊 Historial de IMC</h4>
 
@@ -203,4 +214,54 @@
     </script>
 
 
+=======
+    <div class="card p-4 border-0 light-card mb-4">
+        <h4 class="fw-bold text-dark">📊 Historial de IMC</h4>
+
+        <div id="imc-container">
+            @Html.Action("HistorialIMC", "Usuario", new { pageIMC = 1 })
+        </div>
+    </div>
+
+    <!-- HÁBITOS -->
+    <div class="card p-4 border-0 light-card mb-4">
+        <h4 class="fw-bold text-dark">🧘‍♀️ Hábitos Registrados</h4>
+
+        <div id="habitos-container">
+            @Html.Action("Habitos", "Usuario", new { pageHabitos = 1 })
+        </div>
+    </div>
+
+>>>>>>> develop
 </div>
+
+@section Scripts {
+
+    <script>
+        // Paginación AJAX para IMC
+        $(document).on("click", ".imc-page-link", function (e) {
+            e.preventDefault();
+
+            var page = $(this).data("page");
+            if (!page || page < 1) return;
+
+            $.get("@Url.Action("HistorialIMC", "Usuario")", { pageIMC: page })
+                .done(function (html) {
+                    $("#imc-container").html(html);
+                });
+        });
+
+        // Paginación AJAX para Hábitos
+        $(document).on("click", ".habito-page-link", function (e) {
+            e.preventDefault();
+
+            var page = $(this).data("page");
+            if (!page || page < 1) return;
+
+            $.get("@Url.Action("Habitos", "Usuario")", { pageHabitos: page })
+                .done(function (html) {
+                    $("#habitos-container").html(html);
+                });
+        });
+    </script>
+}
