@@ -152,5 +152,19 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        window.watsonAssistantChatOptions = {
+            integrationID: "363f2417-5985-46ee-be6d-149823ea7f69", // The ID of this integration.
+            region: "au-syd", // The region your integration is hosted in.
+            serviceInstanceID: "c63a87b8-0c76-4083-a2c0-ea2e712e1884", // The ID of your service instance.
+            showRestartButton: true,
+            onLoad: async (instance) => { await instance.render(); }
+        };
+        setTimeout(function () {
+            const t = document.createElement('script');
+            t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+            document.head.appendChild(t);
+        });
+    </script>
 </body>
 </html>

@@ -260,16 +260,16 @@
     font-size: 0.95rem;
 }
 
-    .imc-input::placeholder {
-        color: rgba(248,249,250,0.45);
-    }
+.imc-input::placeholder {
+    color: rgba(248,249,250,0.45);
+}
 
-    .imc-input:focus {
-        border-color: var(--wf-primary);
-        box-shadow: 0 0 0 3px rgba(32,201,151,0.25);
-        outline: none;
-        transform: translateY(-1px);
-    }
+.imc-input:focus {
+    border-color: var(--wf-primary);
+    box-shadow: 0 0 0 3px rgba(32,201,151,0.25);
+    outline: none;
+    transform: translateY(-1px);
+}
 
 .imc-btn {
     padding: 12px;

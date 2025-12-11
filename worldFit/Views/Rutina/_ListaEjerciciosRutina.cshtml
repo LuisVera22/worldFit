@@ -1,0 +1,29 @@
+﻿@model List<Dominio.Entidad.Entidad.Ejercicio>
+
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th>Ejercicio</th>
+            <th>Series</th>
+            <th>Reps</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr id="row-@e.idEjercicioUsuario">
+                <td>@e.nombreEjercicio</td>
+                <td>@e.series</td>
+                <td>@e.repeticiones</td>
+                <td>
+                    <button class="btn btn-danger btn-sm"
+                            onclick="eliminarEjercicio(@e.idEjercicioUsuario)">
+                        🗑 Eliminar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
