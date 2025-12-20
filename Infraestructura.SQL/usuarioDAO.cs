@@ -83,35 +83,32 @@ namespace Infraestructura.SQL
         public Usuario Login(string correo, string clave)
         {
             Usuario usuario = null;
+
             using (SqlConnection cn = new SqlConnection(
                 ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
-                try
-                {
-                    cn.Open();
-                    SqlCommand cmd = new SqlCommand("sp_loginUsuario", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@correo", correo);
-                    cmd.Parameters.AddWithValue("@clave", clave);
+                cn.Open();
+                SqlCommand cmd = new SqlCommand("sp_loginUsuario", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@correo", correo);
+                cmd.Parameters.AddWithValue("@clave", clave);
 
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        usuario = new Usuario()
-                        {
-                            IdUsuario = Convert.ToInt32(dr["idUsuario"]),
-                            nombre = dr["nombre"].ToString(),
-                            correo = correo
-                        };
-                    }
-                }
-                catch
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
                 {
-                    usuario = null;
+                    usuario = new Usuario()
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        nombre = dr["nombre"].ToString(),
+                        correo = correo
+                    };
                 }
             }
+
             return usuario;
         }
+
 
         // Listar todos los usuarios (para pruebas)
         // Listar todos los usuarios (usa dbo.Usuarios)
